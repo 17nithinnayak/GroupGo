@@ -1,11 +1,19 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../assets/carlogo1.png";
 
 export default function Navbar() {
+  // NavLink dynamic style
+  const navItemClass = ({ isActive }) =>
+    isActive
+      ? "text-indigo-700 font-bold transition-colors duration-300"
+      : "text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-300";
+
   return (
     <header className="sticky top-0 bg-white shadow z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        
+        {/* Left: Logo + Navigation */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <img src={logo} alt="GroupGo Logo" className="w-8 h-8" />
@@ -13,33 +21,25 @@ export default function Navbar() {
               GroupGo
             </span>
           </div>
-          <nav className="hidden md:flex space-x-6 text-gray-700 font-medium">
-            <Link
-              to="/"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
+
+          {/* Navigation Links */}
+          <nav className="hidden md:flex space-x-6">
+            <NavLink to="/" className={navItemClass}>
               Home
-            </Link>
-            <Link
-              to="/createRide"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
+            </NavLink>
+            <NavLink to="/createRide" className={navItemClass}>
               Create Ride
-            </Link>
-            <Link
-              to="/requestRide"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
+            </NavLink>
+            <NavLink to="/requestRide" className={navItemClass}>
               Request Ride
-            </Link>
-            <Link
-              to="/rideProgress"
-              className="hover:text-indigo-600 transition-colors duration-300"
-            >
+            </NavLink>
+            <NavLink to="/rideProgress" className={navItemClass}>
               Ride Progress
-            </Link>
+            </NavLink>
           </nav>
         </div>
+
+        {/* Right: Logout, Notification Icon, Avatar */}
         <div className="flex items-center space-x-4">
           <button
             type="button"
@@ -47,6 +47,7 @@ export default function Navbar() {
           >
             Logout
           </button>
+
           <button
             type="button"
             className="relative text-gray-700 hover:text-indigo-600 transition-colors duration-300"
@@ -65,6 +66,7 @@ export default function Navbar() {
               />
             </svg>
           </button>
+
           <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold select-none">
             JD
           </div>
