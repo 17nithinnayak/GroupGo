@@ -4,6 +4,8 @@ from backend.routes.rides import router as rides_router
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routes.graph import router as graph_router
 from backend.routes.match import router as match_router
+from backend.routes.auth import router as auth_router
+
 app = FastAPI()
 
 app.add_middleware(
@@ -27,3 +29,4 @@ async def startup():
 app.include_router(rides_router)
 app.include_router(graph_router)
 app.include_router(match_router)
+app.include_router(auth_router)
