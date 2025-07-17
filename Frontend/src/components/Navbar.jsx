@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink ,Link} from "react-router-dom";
 import logo from "../assets/carlogo1.png";
 
 export default function Navbar() {
@@ -41,12 +41,15 @@ export default function Navbar() {
 
         {/* Right: Logout, Notification Icon, Avatar */}
         <div className="flex items-center space-x-4">
+          <Link to="/login">
           <button
             type="button"
             className="px-3 py-1 rounded-md border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold"
           >
             Logout
           </button>
+          </Link>
+          
 
           <button
             type="button"
