@@ -43,7 +43,7 @@ async def request_ride(rider: Rider):
 
     await rider_collection.insert_one(rider_doc)
 
-    await match_riders_to_drivers()
+    #await match_riders_to_drivers()
     return {"message": "Rider request submitted and matching triggered."}
 
 
