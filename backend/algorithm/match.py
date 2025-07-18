@@ -5,7 +5,7 @@ from datetime import datetime
 from backend.graph.static_graph import get_static_graph
 
 graph = get_static_graph()
-detour_threshold = 5
+detour_threshold = 8
 
 def parse_time(value):
     """Parse ISO format time string to datetime object."""
@@ -23,7 +23,7 @@ def dijkstra(start, end):
             continue
         visited.add(node)
 
-        for neighbor, weight in graph.get(node, {}).items():
+        for neighbor, weight in graph[node].items():
             if neighbor not in visited:
                 heapq.heappush(queue, (cost + weight, neighbor, path + [node]))
     return float("inf"), []
@@ -53,10 +53,10 @@ async def match_riders_to_drivers():
             start = driver["start"]
             departure = parse_time(driver["departure_time"])
 
-            #if not (r_earliest <= departure <= r_latest):
-                #print(f"Rider {rider['rider_id']} Window: {r_earliest} - {r_latest}")
-                #print(f"Driver {driver['driver_id']} Departure: {departure}")
-                #continue
+            if not (r_earliest <= departure <= r_latest):
+                print(f"Rider {rider['rider_id']} Window: {r_earliest} - {r_latest}")
+                print(f"Driver {driver['driver_id']} Departure: {departure}")
+                continue
 
             orig_cost, orig_path = dijkstra(start, "JSSSTU")
             print(f"\n🔍 Driver {driver['driver_id']} original path from {start} to JSSSTU: {orig_path}")
