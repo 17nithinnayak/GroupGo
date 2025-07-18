@@ -3,88 +3,50 @@ import networkx as nx
 def get_static_graph():
 
     return {
-    "Bogadi": {"Saraswathipuram": 4},
-    "Saraswathipuram": {
-        "Kuvempunagar": 3,
-        "JSSSTU": 2,
-        "Vontikoppal": 5,
-        "Bogadi": 4
-    },
-    "Kuvempunagar": {
-        "JSSSTU": 3,
-        "ISKCON": 4,
-        "Saraswathipuram": 3
-    },
-    "Vontikoppal": {
-        "Saraswathipuram": 5
-    },
-
-    "JSSSTU": {
-        "Saraswathipuram": 2,
-        "Kuvempunagar": 3,
-        "Vijaya Bank Circle": 3,
-        "Aroma Bakery": 2,
-        "SJCE": 1,
-        "Vaishnavi Sweets": 4,
-        "RTO Circle": 5,
-        "Ramaswamy": 4
-    },
-
-    "Apolo": {
-        "Ballal": 8,
-        "Vijaya Bank Circle": 5
-    },
-    "Ballal": {
-        "Apolo": 8,
-        "RTO Circle": 2
-    },
-    "Vijaya Bank Circle": {
-        "Kamakshi Hospital": 2,
-        "JSSSTU": 3,
-        "Apolo": 5,
-        "Kavitha Bakery": 3
-    },
-    "Kamakshi Hospital": {
-        "Kukkralli": 7,
-        "Vijaya Bank Circle": 2
-    },
-    "Kukkralli": {
-        "Mysuru University Main Gate": 5,
-        "Kamakshi Hospital": 7
-    },
-    "Mysuru University Main Gate": {
-        "Aroma Bakery": 2,
-        "Kukkralli": 5
-    },
-    "Aroma Bakery": {
-        "JSSSTU": 2,
-        "Mysuru University Main Gate": 2
-    },
-
-    "SJCE": {
-        "JSSSTU": 1,
-        "Grandpa's Kitchen": 7
-    },
-    "Grandpa's Kitchen": {
-        "SJCE": 7
-    },
-
-    "Vaishnavi Sweets": {
-        "Kavitha Bakery": 2,
-        "JSSSTU": 4
-    },
-    "Kavitha Bakery": {
-        "Vaishnavi Sweets": 2,
-        "Vijaya Bank Circle": 3
-    },
-
-    "RTO Circle": {
-        "Ballal": 2,
-        "Ramaswamy": 1,
-        "JSSSTU": 5
-    },
-    "Ramaswamy": {
-        "RTO Circle": 1,
-        "JSSSTU": 4
-    }
+        "Nanjungud Road": {"Chamundipuram": 8},
+        "Chamundipuram": {"Nanjungud Road": 8, "Five Lights Circle": 4},
+        "Five Lights Circle": {"Chamundipuram": 4, "Silk Factory": 5, "Ballal": 3},
+        "Silk Factory": {"Five Lights Circle": 5},
+        "Ballal": {"Five Lights Circle": 3, "Nanjumalige": 3, "Apolo": 8, "RTO Circle": 2},
+        "Nanjumalige": {"Ballal": 3},
+        "Apolo": {"Ballal": 8, "Vijaya Bank Circle": 5},
+        "Vijaya Bank Circle": {"Apolo": 5, "Kavitha Bakery": 3, "Mahalakshmi Sweets": 8, "Kamakshi Hospital": 2},
+        "Kavitha Bakery": {"Vijaya Bank Circle": 3, "Vaishnavi Sweets": 2},
+        "Vaishnavi Sweets": {"Kavitha Bakery": 2, "Bislu Maramma Temple": 8, "Andolana Circle": 6},
+        "Bislu Maramma Temple": {"Vaishnavi Sweets": 8, "Aroma Bakery": 4},
+        "Aroma Bakery": {"Bislu Maramma Temple": 4, "JSSSTU": 6, "Mysuru University Main Gate": 2},
+        "JSSSTU": {"Aroma Bakery": 6, "Grandpa's Kitchen": 7},
+        "ISKCON": {"Kuvmpunagar": 4},
+        "Kuvmpunagar": {"ISKCON": 4, "Mahalakshmi Sweets": 5},
+        "Mahalakshmi Sweets": {"Kuvmpunagar": 5, "Vijaya Bank Circle": 8, "Andolana Circle": 6},
+        "Andolana Circle": {"Mahalakshmi Sweets": 6, "Vaishnavi Sweets": 6},
+        "Kamakshi Hospital": {"Vijaya Bank Circle": 2, "Kukkralli": 7, "Javregowda Park": 6},
+        "Kukkralli": {"Kamakshi Hospital": 7, "Mysuru University Main Gate": 5},
+        "Mysuru University Main Gate": {"Kukkralli": 5, "Aroma Bakery": 2},
+        "Wax Museum": {"Mall Of Mysore": 11},
+        "Mall Of Mysore": {"Wax Museum": 11, "Agrahara": 12},
+        "Agrahara": {"Mall Of Mysore": 12, "RTO Circle": 3},
+        "RTO Circle": {"Agrahara": 3, "Ballal": 2, "Ramaswamy": 1},
+        "Ramaswamy": {"RTO Circle": 1, "Yuvraja College": 3},
+        "Yuvraja College": {"Ramaswamy": 3, "Kukralli Front Gate": 6, "Metropol": 4},
+        "Kukralli Front Gate": {"Yuvraja College": 6, "Kukkralli": 8, "Kalamandir": 5, "Fire Brigade": 7},
+        "Javregowda Park": {"Kamakshi Hospital": 6},
+        "Mylari Hotel": {"Teresian College": 15, "Harding Circle": 7},
+        "Teresian College": {"Mylari Hotel": 15},
+        "Harding Circle": {"Mylari Hotel": 7, "Clock Tower": 4},
+        "Clock Tower": {"Harding Circle": 4, "KR Circle/CBS": 1},
+        "KR Circle/CBS": {"Clock Tower": 1, "Metropol": 7},
+        "Metropol": {"KR Circle/CBS": 7, "Yuvraja College": 4, "Kalamandir": 6, "Railway Station": 2},
+        "Kalamandir": {"Kukralli Front Gate": 5, "Metropol": 6, "Open University": 9},
+        "Fire Brigade": {"Kukralli Front Gate": 7},
+        "Railway Station": {"Metropol": 2, "Sub Urban Bus Stand": 12},
+        "Sub Urban Bus Stand": {"Railway Station": 12},
+        "BMH": {"Open University": 7, "Grandpa's Kitchen": 2},
+        "Open University": {"Kalamandir": 9, "BMH": 7, "Cheluvamba Park": 6},
+        "Grandpa's Kitchen": {"Aishwarya Petrol Bunk": 3, "BMH": 2, "JSSSTU": 7, "Yoga Narasimha Swamy Temple": 6, "Chandrakala Hospital": 5},
+        "Aishwarya Petrol Bunk": {"Grandpa's Kitchen": 3},
+        "Yoga Narasimha Swamy Temple": {"Grandpa's Kitchen": 6},
+        "Chandrakala Hospital": {"Grandpa's Kitchen": 5, "Cheluvamba Park": 7},
+        "Cheluvamba Park": {"Chandrakala Hospital": 7, "Open University": 6, "LIC Circle": 15},
+        "LIC Circle": {"Cheluvamba Park": 15}
 }
