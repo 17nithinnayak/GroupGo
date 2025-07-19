@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+  MapContainer, TileLayer, Marker, Popup, Polyline, useMap
+} from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 import customMarker from '../assets/custom-marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import axios from 'axios';
 
 const customIcon = new L.Icon({
   iconUrl: customMarker,
@@ -28,31 +30,47 @@ const FlyToPickup = ({ coords }) => {
 };
 
 const RideProgress = () => {
-  const [formData] = useState(() => {
-    const saved = localStorage.getItem('driverRideData');
-    return saved
-      ? JSON.parse(saved)
-      : {
-          driver_id: '',
-          start: '',
-          destination: 'JSSSTU',
-          departure_time: '',
-          seats_available: 1,
-        };
-  });
-
-  const [pickupCoords] = useState(defaultCoords);
+  const [driverData, setDriverData] = useState({});
+  const [riderData, setRiderData] = useState({});
+  const [driverCoords, setDriverCoords] = useState(defaultCoords);
+  const [riderCoords, setRiderCoords] = useState(null);
   const [rideStarted, setRideStarted] = useState(false);
   const [rideCancelled, setRideCancelled] = useState(false);
 
+  const geocodeLocation = async (place) => {
+    const staticMap = {
+      'Bogadi': [12.2958, 76.6101],
+      'Saraswathipuram': [12.3015, 76.6311],
+      'JSSSTU': [12.3034, 76.6490],
+      'RTO Circle': [12.3090, 76.6456],
+      'Ballal': [12.3151, 76.6431],
+    };
+    return staticMap[place] || defaultCoords;
+  };
+
   useEffect(() => {
-    // Optional: add logic to geocode formData.start if needed
-    // If you already store pickupCoords in localStorage, use that here
-  }, [formData]);
+    const loadData = async () => {
+      const driver = JSON.parse(localStorage.getItem('driverRideData'));
+      const rider = JSON.parse(localStorage.getItem('matchedRider'));
+      setDriverData(driver || {});
+      setRiderData(rider || {});
+
+      if (driver?.start) {
+        const dCoords = await geocodeLocation(driver.start);
+        setDriverCoords(dCoords);
+      }
+
+      if (rider?.pickup) {
+        const rCoords = await geocodeLocation(rider.pickup);
+        setRiderCoords(rCoords);
+      }
+    };
+    loadData();
+  }, []);
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/drivers', formData);
+      const response = await axios.post('http://localhost:8000/api/drivers', driverData);
       alert('✅ Driver created successfully');
       console.log(response.data);
     } catch (err) {
@@ -79,33 +97,47 @@ const RideProgress = () => {
       <main className="flex flex-col md:flex-row w-full gap-6">
         {/* Map Section */}
         <div className="flex-1 bg-white rounded-2xl shadow-md h-96 overflow-hidden">
-          <MapContainer
-            center={pickupCoords}
-            zoom={13}
-            scrollWheelZoom={false}
-            className="w-full h-full"
-          >
-            <FlyToPickup coords={pickupCoords} />
+          <MapContainer center={driverCoords} zoom={13} scrollWheelZoom={false} className="w-full h-full">
+            <FlyToPickup coords={driverCoords} />
             <TileLayer
               attribution='&copy; OpenStreetMap'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={pickupCoords} icon={customIcon}>
-              <Popup>Pickup Location</Popup>
-            </Marker>
+            {driverCoords && (
+              <Marker position={driverCoords} icon={customIcon}>
+                <Popup>🚗 Driver Start: {driverData.start}</Popup>
+              </Marker>
+            )}
+            {riderCoords && (
+              <Marker position={riderCoords} icon={customIcon}>
+                <Popup>🧍 Rider Pickup: {riderData.pickup}</Popup>
+              </Marker>
+            )}
+            {driverCoords && riderCoords && (
+              <Polyline positions={[driverCoords, riderCoords]} color="blue" />
+            )}
           </MapContainer>
         </div>
 
-        {/* Summary Section */}
+        {/* Ride Info Section */}
         <div className="flex-1 bg-white rounded-2xl shadow-md p-6 space-y-4">
           <h3 className="text-xl font-semibold text-indigo-700">Ride Summary</h3>
 
           <div className="bg-indigo-50 p-4 rounded-md border border-indigo-100 space-y-2">
-            {Object.entries(formData).map(([key, val]) => (
+            <p className="text-gray-800 font-medium">👨‍✈️ Driver Info</p>
+            {Object.entries(driverData).map(([key, val]) => (
               <p key={key} className="text-gray-700 capitalize">
                 <strong>{key.replace('_', ' ')}:</strong> {val || 'Not set'}
               </p>
             ))}
+          </div>
+
+          <div className="bg-green-50 p-4 rounded-md border border-green-100 space-y-2">
+            <p className="text-green-700 font-medium">🧍 Matched Rider Info</p>
+            <p><strong>Rider ID:</strong> {riderData.rider_id || 'Not found'}</p>
+            <p><strong>Pickup:</strong> {riderData.pickup}</p>
+            <p><strong>Destination:</strong> {riderData.destination}</p>
+            <p><strong>Path:</strong> {riderData.path?.join(' ➜ ') || 'Path unavailable'}</p>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-4">
@@ -145,3 +177,4 @@ const RideProgress = () => {
 };
 
 export default RideProgress;
+
