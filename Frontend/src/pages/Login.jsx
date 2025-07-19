@@ -16,24 +16,42 @@ export default function Login() {
   setErrorMsg("");
   setLoading(true);
 
+  console.log("📤 Form submitted with:", { email, password });
+
   try {
     const endpoint =
       formType === "login"
         ? "http://localhost:8000/login"
         : "http://localhost:8000/register";
 
-    const response = await axios.post(endpoint, { email, password });
-    // Removed: alert(response.data.message);
-    localStorage.setItem("userEmail", email); // already captured from form
-navigate("/");
+    const response = await axios.post(
+      endpoint,
+      { email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    console.log(response)
-    navigate("/"); // redirect to homepage
+    console.log("✅ Response received:", response.data);
+    localStorage.setItem("userEmail", email);
+    navigate("/");
   } catch (err) {
+    console.error("❌ Error occurred:", err);
     setErrorMsg(err?.response?.data?.detail || "Something went wrong");
   } finally {
     setLoading(false);
   }
+
+  // Optional fallback if something hangs
+  setTimeout(() => {
+    if (loading) {
+      console.warn("⏱️ Timeout fallback triggered");
+      setErrorMsg("Request taking too long...");
+      setLoading(false);
+    }
+  }, 5000);
 };
 
 

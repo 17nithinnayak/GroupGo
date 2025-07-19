@@ -4,17 +4,23 @@ def get_static_graph():
 
     return {
     "Bogadi": {"Saraswathipuram": 4},
+     "Kuvempunagar": {
+        "JSSSTU": 3,
+        "ISKCON": 4,
+        "Saraswathipuram": 3
+    },
     "Saraswathipuram": {
         "Kuvempunagar": 3,
         "JSSSTU": 2,
         "Vontikoppal": 5,
         "Bogadi": 4
     },
-    "Kuvempunagar": {
-        "JSSSTU": 3,
-        "ISKCON": 4,
-        "Saraswathipuram": 3
+      
+   
+      "ISKCON": {
+        "Kuvempunagar": 4
     },
+
     "Vontikoppal": {
         "Saraswathipuram": 5
     },

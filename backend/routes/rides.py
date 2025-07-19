@@ -73,3 +73,5 @@ async def reset_rides():
     await driver_collection.delete_many({})
     await rider_collection.delete_many({})
     return {"message": "All rides and riders have been reset."}
+
+
